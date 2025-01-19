@@ -15,6 +15,9 @@ class NeatCleanCalendarEvent {
   Color? color;
   bool isAllDay;
   bool isMultiDay;
+  String? url;
+  String? guests;
+  String ?title;
   MultiDaySegement? multiDaySegement;
   bool isDone;
   Map<String, dynamic>? metadata;
@@ -22,10 +25,12 @@ class NeatCleanCalendarEvent {
   bool? wide = false;
   String? id;
 
-  NeatCleanCalendarEvent(
-    this.summary, {
+  NeatCleanCalendarEvent(this.summary, {
     this.description = '',
     this.location = '',
+    this.url,
+    this.guests,
+    this.title,
     required this.startTime,
     required this.endTime,
     this.color = Colors.blue,

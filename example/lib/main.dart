@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field
 
 import 'package:flutter/material.dart';
+import 'package:flutter_neat_and_clean_calendar/date_picker_config.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -11,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Clean Calendar Demo',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
@@ -71,7 +73,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
         color: Colors.lightGreen,
         isAllDay: false,
         isDone: true,
-        icon: 'assets/event1.jpg',
         wide: false),
     NeatCleanCalendarEvent('Allday Event B',
         description: 'test desc',
@@ -81,7 +82,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
             DateTime.now().day + 2, 17, 0),
         color: Colors.pink,
         isAllDay: true,
-        icon: 'assets/event1.jpg',
         wide: false),
     NeatCleanCalendarEvent(
       'Normal Event D',
@@ -92,9 +92,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 17, 0),
       color: Colors.indigo,
       wide: true,
-      icon: 'assets/events.jpg',
     ),
     NeatCleanCalendarEvent(
+      title: "case",
       'Normal Event E',
       description: 'test desc',
       startTime: DateTime(
@@ -103,7 +103,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 9, 0),
       color: Colors.indigo,
       wide: true,
-      icon: 'assets/profile.jpg',
     ),
   ];
 
@@ -125,52 +124,30 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: Calendar(
+          todayColor: Colors.red,
+
           startOnMonday: true,
           weekDays: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
           eventsList: _eventList,
           isExpandable: true,
+
           // You can set your own event cell builder function to customize the event cells
           // Try it by uncommenting the line below
           // eventCellBuilder: eventCell,
-          eventDoneColor: Colors.deepPurple,
-          selectedColor: Colors.blue,
-          selectedTodayColor: Colors.green,
-          todayColor: Colors.teal,
-          defaultDayColor: Colors.orange,
-          defaultOutOfMonthDayColor: Colors.grey,
-          datePickerDarkTheme: ThemeData.dark().copyWith(
-            colorScheme: ColorScheme.dark(
-              primary: Colors.blue,
-              onPrimary: Colors.yellow,
-              surface: Colors.grey,
-              onSurface: Colors.yellow,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.orange,
-              ),
-            ),
-          ),
-          datePickerLightTheme: ThemeData.dark().copyWith(
-            colorScheme: ColorScheme.dark(
-              primary: Colors.blue,
-              onPrimary: Colors.white,
-              surface: Colors.white,
-              onSurface: Colors.teal,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.orange,
-              ),
-            ),
-          ),
-          eventColor: null,
-          locale: 'de_DE',
-          todayButtonText: 'Heute',
-          allDayEventText: 'Ganztägig',
-          multiDayEndText: 'Ende',
+
+          // selectedColor: Colors.white,
+          selectedTodayColor: Colors.grey,
+          // todayColor: Colors.red,
+          // defaultOutOfMonthDayColor: Colors.grey,
+          // defaultDayColor: Colors.black,
+          eventColor: Colors.red,
+          locale: 'en',
+
+          hideTodayIcon: true,
+
           isExpanded: true,
           expandableDateFormat: 'EEEE, dd. MMMM yyyy',
           onEventSelected: (value) {
@@ -179,6 +156,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           onEventLongPressed: (value) {
             print('Event long pressed ${value.summary}');
           },
+
           // onMonthChanged: (value) {
           //   print('Month changed $value');
           // },
@@ -188,10 +166,40 @@ class _CalendarScreenState extends State<CalendarScreen> {
           onRangeSelected: (value) {
             print('Range selected ${value.from} - ${value.to}');
           },
-          datePickerType: DatePickerType.date,
+          datePickerConfig: DatePickerConfig(
+            initialDate: DateTime.now(),
+          ),
+          displayMonthTextStyle: TextStyle(
+            color: Colors.black,
+          ),
+          // eventListBuilder: (BuildContext context, List<NeatCleanCalendarEvent> events) {
+          //   return Expanded(
+          //     flex: 0,
+          //     child: Container(
+          //       height: 100,
+          //       child: ListView.builder(
+          //         itemCount: events.length,
+          //         itemBuilder: (BuildContext context, int index) {
+          //           return ListTile(
+          //             title: Text(events[index].summary),
+          //             subtitle: Text(events[index].description),
+          //           );
+          //         },
+          //       ),
+          //     ),
+          //   );
+          // },
+
+          selectedColor: Colors.white,
+          defaultDayColor: Colors.black,
+          topRowIconColor: Colors.grey,
+          datePickerType: DatePickerType.hidden,
+          bottomBarTextStyle: TextStyle(color: Colors.white),
+          bottomBarArrowColor: Colors.red,
+          bottomBarColor: Colors.black,
           dayOfWeekStyle: TextStyle(
-              color: Colors.red, fontWeight: FontWeight.w800, fontSize: 11),
-          showEventListViewIcon: true,
+              color: Colors.grey, fontWeight: FontWeight.w800, fontSize: 11),
+          showEventListViewIcon: false,
           showEvents: showEvents,
         ),
       ),

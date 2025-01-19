@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/provider_image.dart';
+
 // import 'package:flutter_neat_and_clean_calendar/platform_widgets.dart';
 import './date_utils.dart';
 import './neat_and_clean_calendar_event.dart';
@@ -98,7 +99,8 @@ class NeatCleanCalendarTile extends StatelessWidget {
             // the color passed with the selectedColor parameter or red color.
             decoration: isSelected && date != null
                 ? BoxDecoration(
-                    shape: BoxShape.circle,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(4),
                     color: selectedColor != null
                         ? Utils.isSameDay(this.date!, DateTime.now())
                             ? selectedTodayColor != null
@@ -139,7 +141,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
                     fontSize: 14.0,
                     fontWeight: FontWeight.w400,
                     color: isSelected && this.date != null
-                        ? Colors.white
+                        ? Colors.redAccent
                         : Utils.isSameDay(this.date!, DateTime.now())
                             ? todayColor
                             : inMonth
@@ -179,7 +181,7 @@ class NeatCleanCalendarTile extends StatelessWidget {
                               // color property of the NeatCleanCalendarEvent. If both aren't set, then
                               // the accent color of the theme get used.
                               color: (() {
-                                if (isSelected) return Colors.white;
+                                // if (isSelected) return Colors.white;
                                 // If eventColor property was not set, the color defined for the event
                                 // gets used. If the eveent has its property isDone set to true, the
                                 // eventDoneColor gets used.

@@ -27,6 +27,7 @@ enum DatePickerType { hidden, year, date }
 class Range {
   final DateTime from;
   final DateTime to;
+
   Range(this.from, this.to);
 }
 
@@ -138,6 +139,7 @@ class Calendar extends StatefulWidget {
   final List<String> weekDays;
   final String? locale;
   final bool startOnMonday;
+  final Widget emptyEventWidget;
   final TextStyle? dayOfWeekStyle;
   final TextStyle? bottomBarTextStyle;
   final Color? bottomBarArrowColor;
@@ -171,6 +173,7 @@ class Calendar extends StatefulWidget {
       this.datePickerType = DatePickerType.hidden,
       this.hideTodayIcon = false,
       this.hideArrows = false,
+      this.emptyEventWidget = const Text('No events'),
       this.defaultDayColor = Colors.black87,
       this.defaultOutOfMonthDayColor,
       this.selectedColor = Colors.pink,
@@ -210,6 +213,7 @@ class _CalendarState extends State<Calendar> {
   late List<DateTime> selectedMonthsDays;
   late Iterable<DateTime> selectedWeekDays;
   late Map<DateTime, List<NeatCleanCalendarEvent>>? eventsMap;
+
   // selectedDate is the date, that is currently selected. It is highlighted with a circle.
   DateTime _selectedDate = DateTime.now();
   String? currentMonth;
@@ -217,6 +221,7 @@ class _CalendarState extends State<Calendar> {
   late bool forceEventListView;
   bool _didScroll = false;
   String displayMonth = '';
+
   DateTime get selectedDate => _selectedDate;
   List<NeatCleanCalendarEvent>? _selectedEvents;
   bool isDarkMode = false;
@@ -647,7 +652,7 @@ class _CalendarState extends State<Calendar> {
         child: Column(
           children: <Widget>[
             GridView.count(
-              childAspectRatio: 1.5,
+              childAspectRatio: 1,
               primary: false,
               shrinkWrap: true,
               crossAxisCount: 7,
@@ -775,19 +780,21 @@ class _CalendarState extends State<Calendar> {
       return GestureDetector(
         onTap: toggleExpanded,
         child: Container(
-          color: widget.bottomBarColor ?? Color.fromRGBO(200, 200, 200, 0.2),
-          height: 40,
-          margin: EdgeInsets.only(top: 8.0),
-          padding: EdgeInsets.all(0),
+          decoration: BoxDecoration(
+              color:
+                  widget.bottomBarColor ?? Color.fromRGBO(200, 200, 200, 0.2),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(25),
+                topRight: Radius.circular(25),
+              )),
+          height: 70,
+          margin: EdgeInsets.only(
+            top: 8.0,
+          ),
+          padding: EdgeInsets.only(bottom: 15),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              SizedBox(width: 40.0),
-              Text(
-                DateFormat(widget.expandableDateFormat, widget.locale)
-                    .format(_selectedDate),
-                style: widget.bottomBarTextStyle ?? TextStyle(fontSize: 13),
-              ),
               PlatformIconButton(
                 onPressed: toggleExpanded,
                 padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
@@ -802,6 +809,12 @@ class _CalendarState extends State<Calendar> {
                         size: 25.0,
                         color: widget.bottomBarArrowColor ?? Colors.black,
                       ),
+              ),
+              // SizedBox(width: 40.0),
+              Text(
+                DateFormat(widget.expandableDateFormat, widget.locale)
+                    .format(_selectedDate),
+                style: widget.bottomBarTextStyle ?? TextStyle(fontSize: 13),
               ),
             ],
           ),
@@ -897,47 +910,121 @@ class _CalendarState extends State<Calendar> {
         return 1;
       });
     }
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          nameAndIconRow,
-          if (forceEventListView) ...[
-            eventlistView,
-            if (!_didScroll) ...[
-              // When the widget is built, a PostFrameCallback is added to scroll the widget
-              // after it has been built.
-              Builder(
-                builder: (context) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    Future.delayed(Duration(milliseconds: 100), () {
-                      // Only execute the scroll to top, if the scroll
-                      // controller has clients (was properly attached to a
-                      // list view).
-                      if (_scrollController.hasClients) {
-                        resetToToday();
-                      }
-                    });
-                  });
-                  return Container();
-                },
+    return CustomScrollView(shrinkWrap: true, slivers: [
+      SliverFillRemaining(
+        hasScrollBody: true,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  nameAndIconRow,
+                  if (forceEventListView) ...[
+                    eventlistView,
+                    if (!_didScroll) ...[
+                      // When the widget is built, a PostFrameCallback is added to scroll the widget
+                      // after it has been built.
+                      Builder(
+                        builder: (context) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Future.delayed(Duration(milliseconds: 100), () {
+                              // Only execute the scroll to top, if the scroll
+                              // controller has clients (was properly attached to a
+                              // list view).
+                              if (_scrollController.hasClients) {
+                                resetToToday();
+                              }
+                            });
+                          });
+                          return Container();
+                        },
+                      ),
+                    ]
+                  ] else ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                      child: ExpansionCrossFade(
+                        collapsed: calendarGridView,
+                        expanded: calendarGridView,
+                        isExpanded: isExpanded,
+                      ),
+                    ),
+                    // Expanded(
+                    //   child:
+                    //   Stack(
+                    //     children: [
+
+                    //     ],
+                    //   ),
+                    // ),
+                  ],
+                ],
               ),
-            ]
-          ] else ...[
-            ExpansionCrossFade(
-              collapsed: calendarGridView,
-              expanded: calendarGridView,
-              isExpanded: isExpanded,
             ),
-            expansionButtonRow,
-            if (widget.showEvents) eventlistView
+            Expanded(
+              // flex: 0,
+              child: Stack(
+                children: [
+                  expansionButtonRow,
+                  if (widget.showEvents) eventlistView,
+                ],
+              ),
+            )
           ],
-        ],
-      ),
-    );
+        ),
+      )
+    ]);
   }
 
+  // Column(
+  // mainAxisAlignment: MainAxisAlignment.start,
+  // mainAxisSize: MainAxisSize.min,
+  // children: <Widget>[
+  // nameAndIconRow,
+  // if (forceEventListView) ...[
+  // eventlistView,
+  // if (!_didScroll) ...[
+  // // When the widget is built, a PostFrameCallback is added to scroll the widget
+  // // after it has been built.
+  // Builder(
+  // builder: (context) {
+  // WidgetsBinding.instance.addPostFrameCallback((_) {
+  // Future.delayed(Duration(milliseconds: 100), () {
+  // // Only execute the scroll to top, if the scroll
+  // // controller has clients (was properly attached to a
+  // // list view).
+  // if (_scrollController.hasClients) {
+  // resetToToday();
+  // }
+  // });
+  // });
+  // return Container();
+  // },
+  // ),
+  // ]
+  // ] else ...[
+  // ExpansionCrossFade(
+  // collapsed: calendarGridView,
+  // expanded: calendarGridView,
+  // isExpanded: isExpanded,
+  // ),
+  // // Expanded(
+  // //   child:
+  // //   Stack(
+  // //     children: [
+  // expansionButtonRow,
+  // if (widget.showEvents) eventlistView,
+  // //     ],
+  // //   ),
+  // // ),
+  // ],
+  // ],
+  // ),
   /// A getter that returns a list of widgets representing the events in the event card.
   ///
   /// The `eventlistView` method creates a list of widgets that represent the events in the event card.
@@ -1004,11 +1091,22 @@ class _CalendarState extends State<Calendar> {
         );
       } else {
         // List view is not active
-        return Expanded(
-          child: _listEvents != null && _listEvents.isNotEmpty
-              // Create a list of events that are occurring on the currently selected day, if there are
-              // any. Otherwise, display an empty Container.
-              ? ListView.builder(
+        return _listEvents != null && _listEvents.isNotEmpty
+            // Create a list of events that are occurring on the currently selected day, if there are
+            // any. Otherwise, display an empty Container.
+            ?
+            //
+            Container(
+                margin: EdgeInsets.only(top: 60.0),
+                padding: EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  ),
+                ),
+                child: ListView.builder(
                   padding: EdgeInsets.all(0.0),
                   itemBuilder: (BuildContext context, int index) {
                     final NeatCleanCalendarEvent event = _listEvents[index];
@@ -1021,9 +1119,24 @@ class _CalendarState extends State<Calendar> {
                         : widget.eventCellBuilder!(context, event, start, end);
                   },
                   itemCount: _listEvents.length,
-                )
-              : Container(),
-        );
+                ))
+            : Container(
+                margin: EdgeInsets.only(top: 60.0),
+                padding: EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  ),
+                ),
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(child: widget.emptyEventWidget),
+                  ],
+                ));
       }
     } else {
       // eventListBuilder is not null
@@ -1041,85 +1154,176 @@ class _CalendarState extends State<Calendar> {
   /// It also handles tap and long press gestures on the event cell.
   Widget eventCell(NeatCleanCalendarEvent event, String start, String end) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       height:
-          widget.eventTileHeight ?? MediaQuery.of(context).size.height * 0.08,
+          widget.eventTileHeight ?? MediaQuery.of(context).size.height * 0.1,
+      decoration: BoxDecoration(
+          border:
+              Border(bottom: BorderSide(color: Colors.grey.withOpacity(0.3)))),
       child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          if (widget.onEventSelected != null) {
-            widget.onEventSelected!(event);
-          }
-        },
-        onLongPress: () {
-          if (widget.onEventLongPressed != null) {
-            widget.onEventLongPressed!(event);
-          }
-        },
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              flex: event.wide != null && event.wide! == true ? 25 : 5,
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    // If no image is provided, use the color of the event.
-                    // If the event has set isDone to true, use the eventDoneColor
-                    // gets used. If that eventDoneColor is not set, use the
-                    // primaryColor of the theme.
-                    color: event.isDone
-                        ? widget.eventDoneColor ??
-                            Theme.of(context).primaryColor
-                        : event.color,
-                    borderRadius: BorderRadius.circular(10),
-                    image: event.icon != '' && event.icon != null
-                        ? DecorationImage(
-                            fit: BoxFit.cover,
-                            image: providerImage(event.icon!),
-                          )
-                        : null,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 5.0),
-            Expanded(
-              flex: 60,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(event.summary,
-                        style: Theme.of(context).textTheme.bodySmall),
-                    SizedBox(
-                      height: 10.0,
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            if (widget.onEventSelected != null) {
+              widget.onEventSelected!(event);
+            }
+          },
+          onLongPress: () {
+            if (widget.onEventLongPressed != null) {
+              widget.onEventLongPressed!(event);
+            }
+          },
+          child: Column(
+            spacing: 10,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                    decoration: BoxDecoration(
+                      color: event.isDone
+                          ? widget.eventDoneColor ??
+                              Theme.of(context).primaryColor
+                          : event.color?.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(5),
+                      image: event.icon != '' && event.icon != null
+                          ? DecorationImage(
+                              fit: BoxFit.cover,
+                              image: providerImage(event.icon!),
+                            )
+                          : null,
                     ),
-                    Text(
-                      event.description,
-                      overflow: TextOverflow.ellipsis,
-                    )
+                    child: Text(event.title ?? "__",
+                        style: TextStyle(
+                          color: event.color ?? Colors.white,
+                        )),
+                  ),
+                  if (event.isAllDay) ...[
+                    Spacer(),
+                    Text(widget.allDayEventText,
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                        )),
+                  ]
+                ],
+              ),
+              IntrinsicHeight(
+                child: Row(
+                  // mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                        child: Text(
+                      event.summary ?? "ab",
+                      style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+                    VerticalDivider(
+                      color: Colors.grey,
+                      thickness: .5,
+                      width: 15,
+                    ),
+                    Flexible(
+                        child: Text(
+                      DateFormat('HH:mm').format(event.startTime).toString() +
+                          " - " +
+                          DateFormat('HH:mm').format(event.endTime).toString(),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+                    VerticalDivider(
+                      color: Colors.grey,
+                      thickness: .5,
+                      width: 15,
+                    ),
+                    Flexible(
+                        child: Text(
+                      event.guests ?? "abenourKenioua fjnfjd",
+                      style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: 12,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
                   ],
                 ),
-              ),
-            ),
-            // This Expanded widget gets used to display the start and end time of the
-            // event.
-            Expanded(
-              flex: 30,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                // If the event is all day, then display the word "All day" with no time.
-                child: event.isAllDay || event.isMultiDay
-                    ? allOrMultiDayDayTimeWidget(event)
-                    : singleDayTimeWidget(start, end),
-              ),
-            )
-          ],
-        ),
-      ),
+              )
+            ],
+          )
+          // Row(
+          //   crossAxisAlignment: CrossAxisAlignment.center,
+          //   children: <Widget>[
+          //     Expanded(
+          //       flex: event.wide != null && event.wide! == true ? 25 : 5,
+          //       child: Padding(
+          //         padding: const EdgeInsets.all(4.0),
+          //         child: Container(
+          //           decoration: BoxDecoration(
+          //             // If no image is provided, use the color of the event.
+          //             // If the event has set isDone to true, use the eventDoneColor
+          //             // gets used. If that eventDoneColor is not set, use the
+          //             // primaryColor of the theme.
+          //             color: event.isDone
+          //                 ? widget.eventDoneColor ??
+          //                     Theme.of(context).primaryColor
+          //                 : event.color,
+          //             borderRadius: BorderRadius.circular(10),
+          //             image: event.icon != '' && event.icon != null
+          //                 ? DecorationImage(
+          //                     fit: BoxFit.cover,
+          //                     image: providerImage(event.icon!),
+          //                   )
+          //                 : null,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //     SizedBox(height: 5.0),
+          //     Expanded(
+          //       flex: 60,
+          //       child: Padding(
+          //         padding: const EdgeInsets.all(8.0),
+          //         child: Column(
+          //           crossAxisAlignment: CrossAxisAlignment.start,
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: [
+          //             Text(event.summary,
+          //                 style: Theme.of(context).textTheme.bodySmall),
+          //             SizedBox(
+          //               height: 10.0,
+          //             ),
+          //             Text(
+          //               event.description,
+          //               overflow: TextOverflow.ellipsis,
+          //             )
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //     // This Expanded widget gets used to display the start and end time of the
+          // event.
+          // Expanded(
+          //   flex: 30,
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(8.0),
+          //     // If the event is all day, then display the word "All day" with no time.
+          //     child: event.isAllDay || event.isMultiDay
+          //         ? allOrMultiDayDayTimeWidget(event)
+          //         : singleDayTimeWidget(start, end),
+          //   ),
+          // )
+          //   ],
+          // ),
+          ),
     );
   }
 
@@ -1433,7 +1637,7 @@ class ExpansionCrossFade extends StatelessWidget {
       sizeCurve: Curves.decelerate,
       crossFadeState:
           isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 200),
     );
   }
 }
