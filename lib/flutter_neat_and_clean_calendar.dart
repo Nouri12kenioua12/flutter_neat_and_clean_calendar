@@ -1184,7 +1184,7 @@ class _CalendarState extends State<Calendar> {
                         EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                     decoration: BoxDecoration(
                       color: event.backgroundColor,
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(25),
                     ),
                     child: Text(event.type ?? "__",
                         style: TextStyle(
