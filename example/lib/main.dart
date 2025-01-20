@@ -62,26 +62,31 @@ class _CalendarScreenState extends State<CalendarScreen> {
       endTime: DateTime(DateTime.now().year, DateTime.now().month,
           DateTime.now().day + 2, 12, 0),
       color: Colors.orange,
+      backgroundColor: Colors.orange,
       isMultiDay: true,
     ),
-    NeatCleanCalendarEvent('Event X',
-        description: 'test desc',
-        startTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day, 10, 30),
-        endTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day, 11, 30),
-        color: Colors.lightGreen,
-        isAllDay: false,
-      ),
-    NeatCleanCalendarEvent('Allday Event B',
-        description: 'test desc',
-        startTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day - 2, 14, 30),
-        endTime: DateTime(DateTime.now().year, DateTime.now().month,
-            DateTime.now().day + 2, 17, 0),
-        color: Colors.pink,
-        isAllDay: true,
-        ),
+    NeatCleanCalendarEvent(
+      'Event X',
+      description: 'test desc',
+      startTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, 10, 30),
+      endTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, 11, 30),
+      color: Colors.lightGreen,
+      backgroundColor: Colors.green,
+      isAllDay: false,
+    ),
+    NeatCleanCalendarEvent(
+      'Allday Event B',
+      description: 'test desc',
+      startTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day - 2, 14, 30),
+      endTime: DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day + 2, 17, 0),
+      color: Colors.pink,
+      backgroundColor: Colors.pink,
+      isAllDay: true,
+    ),
     NeatCleanCalendarEvent(
       'Normal Event D',
       description: 'test desc',
@@ -90,6 +95,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       endTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 17, 0),
       color: Colors.indigo,
+      backgroundColor: Colors.indigo,
     ),
     NeatCleanCalendarEvent(
       title: "case",
@@ -148,10 +154,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
           isExpanded: true,
           expandableDateFormat: 'EEEE, dd. MMMM yyyy',
-          onEventSelected: (value) {
-          },
-          onEventLongPressed: (value) {
-          },
+          onEventSelected: (value) {},
+          onEventLongPressed: (value) {},
 
           // onMonthChanged: (value) {
           //   print('Month changed $value');

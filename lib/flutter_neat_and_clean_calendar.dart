@@ -1108,7 +1108,7 @@ class _CalendarState extends State<Calendar> {
                   ),
                 ),
                 child: ListView.builder(
-                  padding: EdgeInsets.all(0.0),
+                  padding: EdgeInsets.symmetric(vertical: 8),
                   itemBuilder: (BuildContext context, int index) {
                     final NeatCleanCalendarEvent event = _listEvents[index];
                     final String start =
