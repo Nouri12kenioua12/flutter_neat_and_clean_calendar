@@ -72,8 +72,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             DateTime.now().day, 11, 30),
         color: Colors.lightGreen,
         isAllDay: false,
-        isDone: true,
-        wide: false),
+      ),
     NeatCleanCalendarEvent('Allday Event B',
         description: 'test desc',
         startTime: DateTime(DateTime.now().year, DateTime.now().month,
@@ -82,7 +81,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             DateTime.now().day + 2, 17, 0),
         color: Colors.pink,
         isAllDay: true,
-        wide: false),
+        ),
     NeatCleanCalendarEvent(
       'Normal Event D',
       description: 'test desc',
@@ -91,7 +90,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
       endTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 17, 0),
       color: Colors.indigo,
-      wide: true,
     ),
     NeatCleanCalendarEvent(
       title: "case",
@@ -101,8 +99,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 7, 45),
       endTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 9, 0),
-      color: Colors.indigo,
-      wide: true,
+      color: Colors.red,
+      backgroundColor: Colors.green,
     ),
   ];
 
@@ -118,7 +116,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       String start, String end) {
     return Container(
         padding: EdgeInsets.all(8.0),
-        child: Text('Calendar Event: ${event.summary} from $start to $end'));
+        child: Text('Calendar Event: ${event.type} from $start to $end'));
   }
 
   @override
@@ -151,10 +149,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
           isExpanded: true,
           expandableDateFormat: 'EEEE, dd. MMMM yyyy',
           onEventSelected: (value) {
-            print('Event selected ${value.summary}');
           },
           onEventLongPressed: (value) {
-            print('Event long pressed ${value.summary}');
           },
 
           // onMonthChanged: (value) {

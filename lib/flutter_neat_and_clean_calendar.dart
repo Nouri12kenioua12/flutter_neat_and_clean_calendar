@@ -382,38 +382,39 @@ class _CalendarState extends State<Calendar> {
                 [];
             // Iteration over the range (difference between start and end time in days).
             NeatCleanCalendarEvent newEvent = NeatCleanCalendarEvent(
-                event.summary,
-                description: event.description,
-                location: event.location,
-                color: event.color,
-                isAllDay: event.isAllDay,
-                isDone: event.isDone,
-                icon: event.icon,
-                // Multi-day events span over several days. They have a start time on the first day
-                // and an end time on the last day.  All-day events don't have a start time and end time
-                // So if an event ist an all-day event, the multi-day property gets set to false.
-                // If the event is not an all-day event, the multi-day property gets set to true, because
-                // the difference between
-                isMultiDay: event.isAllDay ? false : true,
-                // Event spans over several days, but entreis in the list can only cover one
-                // day, so the end date of one entry must be on the same day as the start.
-                multiDaySegement: MultiDaySegement.first,
-                startTime: DateTime(
-                    event.startTime.year,
-                    event.startTime.month,
-                    event.startTime.day + i,
-                    event.startTime.hour,
-                    event.startTime.minute),
-                endTime: DateTime(
-                    event.startTime.year,
-                    event.startTime.month,
-                    event.startTime.day + i,
-                    event.endTime.hour,
-                    event.endTime.minute),
-                // Pass the metadata to the new event.
-                metadata: event.metadata,
-                id: event.id,
-                wide: event.wide);
+              event.type,
+              description: event.description,
+              color: event.color,
+              isAllDay: event.isAllDay,
+
+              // Multi-day events span over several days. They have a start time on the first day
+              // and an end time on the last day.  All-day events don't have a start time and end time
+              // So if an event ist an all-day event, the multi-day property gets set to false.
+              // If the event is not an all-day event, the multi-day property gets set to true, because
+              // the difference between
+              isMultiDay: event.isAllDay ? false : true,
+              // Event spans over several days, but entreis in the list can only cover one
+              // day, so the end date of one entry must be on the same day as the start.
+              multiDaySegement: MultiDaySegement.first,
+              startTime: DateTime(
+                  event.startTime.year,
+                  event.startTime.month,
+                  event.startTime.day + i,
+                  event.startTime.hour,
+                  event.startTime.minute),
+              endTime: DateTime(
+                  event.startTime.year,
+                  event.startTime.month,
+                  event.startTime.day + i,
+                  event.endTime.hour,
+                  event.endTime.minute),
+              // Pass the metadata to the new event.
+              metadata: event.metadata,
+              id: event.id,
+              backgroundColor: event.backgroundColor,
+              title: event.title,
+               guests: event.guests,
+            );
 
             if (i == 0) {
               // First day of the event.
@@ -841,14 +842,14 @@ class _CalendarState extends State<Calendar> {
 
   Column allOrMultiDayDayTimeWidget(NeatCleanCalendarEvent event) {
     widget.onPrintLog != null
-        ? widget.onPrintLog!('=== Summary: ${event.summary}')
-        : print('=== Summary: ${event.summary}');
+        ? widget.onPrintLog!('=== Summary: ${event.type}')
+        : print('=== Summary: ${event.type}');
     String start = DateFormat('HH:mm').format(event.startTime).toString();
     String end = DateFormat('HH:mm').format(event.endTime).toString();
     if (event.isAllDay) {
       widget.onPrintLog != null
-          ? widget.onPrintLog!('AllDayEvent - ${event.summary}')
-          : print('AllDayEvent - ${event.summary}');
+          ? widget.onPrintLog!('AllDayEvent - ${event.type}')
+          : print('AllDayEvent - ${event.type}');
       return Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -864,21 +865,21 @@ class _CalendarState extends State<Calendar> {
       // The event begins on the selcted day.
       // Just show the start time, no end time.
       widget.onPrintLog != null
-          ? widget.onPrintLog!('MultiDayEvent: start - ${event.summary}')
-          : print('MultiDayEvent: start - ${event.summary}');
+          ? widget.onPrintLog!('MultiDayEvent: start - ${event.type}')
+          : print('MultiDayEvent: start - ${event.type}');
       end = '';
     } else if (event.multiDaySegement == MultiDaySegement.last) {
       // The event ends on the selcted day.
       // Just show the end time, no start time.
       widget.onPrintLog != null
-          ? widget.onPrintLog!('MultiDayEvent: end - ${event.summary}')
-          : print('MultiDayEvent: end - ${event.summary}');
+          ? widget.onPrintLog!('MultiDayEvent: end - ${event.type}')
+          : print('MultiDayEvent: end - ${event.type}');
       start = widget.multiDayEndText;
     } else {
       // The event spans multiple days.
       widget.onPrintLog != null
-          ? widget.onPrintLog!('MultiDayEvent: middle - ${event.summary}')
-          : print('MultiDayEvent: middle - ${event.summary}');
+          ? widget.onPrintLog!('MultiDayEvent: middle - ${event.type}')
+          : print('MultiDayEvent: middle - ${event.type}');
       start = widget.allDayEventText;
       end = '';
     }
@@ -1182,19 +1183,10 @@ class _CalendarState extends State<Calendar> {
                     padding:
                         EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                     decoration: BoxDecoration(
-                      color: event.isDone
-                          ? widget.eventDoneColor ??
-                              Theme.of(context).primaryColor
-                          : event.color?.withOpacity(0.3),
+                      color: event.backgroundColor,
                       borderRadius: BorderRadius.circular(5),
-                      image: event.icon != '' && event.icon != null
-                          ? DecorationImage(
-                              fit: BoxFit.cover,
-                              image: providerImage(event.icon!),
-                            )
-                          : null,
                     ),
-                    child: Text(event.title ?? "__",
+                    child: Text(event.type ?? "__",
                         style: TextStyle(
                           color: event.color ?? Colors.white,
                         )),
@@ -1216,7 +1208,7 @@ class _CalendarState extends State<Calendar> {
                   children: [
                     Flexible(
                         child: Text(
-                      event.summary ?? "ab",
+                      event.title ?? "ab",
                       style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: 12,

@@ -7,40 +7,31 @@ enum MultiDaySegement {
 }
 
 class NeatCleanCalendarEvent {
-  String summary;
+  String type;
   String description;
-  String location;
-  DateTime startTime;
-  DateTime endTime;
-  Color? color;
-  bool isAllDay;
-  bool isMultiDay;
-  String? url;
+  Color? color, backgroundColor;
   String? guests;
   String ?title;
+  DateTime startTime;
+  DateTime endTime;
+  bool isAllDay;
+  bool isMultiDay;
   MultiDaySegement? multiDaySegement;
-  bool isDone;
   Map<String, dynamic>? metadata;
-  String? icon;
-  bool? wide = false;
   String? id;
 
-  NeatCleanCalendarEvent(this.summary, {
+  NeatCleanCalendarEvent(this.type, {
     this.description = '',
-    this.location = '',
-    this.url,
     this.guests,
     this.title,
     required this.startTime,
     required this.endTime,
+    this .backgroundColor,
     this.color = Colors.blue,
     this.isAllDay = false,
     this.isMultiDay = false,
-    this.isDone = false,
     multiDaySegement,
     this.metadata,
-    this.icon,
-    this.wide,
     this.id,
   });
 }
