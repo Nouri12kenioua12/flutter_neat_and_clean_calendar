@@ -619,6 +619,7 @@ class _CalendarState extends State<Calendar> {
                 displayMonth,
                 style: widget.displayMonthTextStyle ??
                     TextStyle(
+                      locale: Locale(widget.locale ?? 'us_US'),
                       fontSize: 20.0,
                     ),
               ),
@@ -653,7 +654,6 @@ class _CalendarState extends State<Calendar> {
         child: Column(
           children: <Widget>[
             GridView.count(
-
               childAspectRatio: 1,
               mainAxisSpacing: 0,
               crossAxisSpacing: 5,
@@ -1119,7 +1119,7 @@ class _CalendarState extends State<Calendar> {
           widget.eventTileHeight ?? MediaQuery.of(context).size.height * 0.1,
       decoration: BoxDecoration(
           border: Border(
-        bottom: BorderSide(color: Colors.grey.shade200,width: .5),
+        bottom: BorderSide(color: Colors.grey.shade200, width: .5),
       )),
       child: GestureDetector(
           behavior: HitTestBehavior.opaque,

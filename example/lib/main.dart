@@ -149,7 +149,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           // defaultOutOfMonthDayColor: Colors.grey,
           // defaultDayColor: Colors.black,
           eventColor: Colors.red,
-          locale: 'en',
+          locale: 'ar',
 
           hideTodayIcon: true,
 
