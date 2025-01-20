@@ -93,45 +93,55 @@ class NeatCleanCalendarTile extends StatelessWidget {
       return GestureDetector(
         onTap: onDateSelected, // react on tapping
         child: Padding(
-          padding: const EdgeInsets.all(1.0),
+          padding: const EdgeInsets.all(5.0),
           child: Container(
             // If this tile is the selected date, draw a colored circle on it. The circle is filled with
             // the color passed with the selectedColor parameter or red color.
             decoration: isSelected && date != null
                 ? BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(4),
-              color: selectedColor != null
-                  ? Utils.isSameDay(this.date!, DateTime.now())
-                  ? selectedTodayColor != null
-                  ? selectedTodayColor
-                  : Colors.red
-                  : selectedColor
-                  : Theme
-                  .of(context)
-                  .primaryColor,
-              image: events != null && events!.isNotEmpty
-                  ? icon != '' && icon != null
-                  ? DecorationImage(
-                fit: BoxFit.cover,
-                image: providerImage(icon!),
-              )
-                  : null
-                  : null,
-            )
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.only(
+                      // make the circle a bit smaller
+                      topLeft: Radius.circular(3.0),
+                      topRight: Radius.circular(3.0),
+                      bottomLeft: Radius.circular(8.0),
+                      bottomRight: Radius.circular(8.0),
+                    ),
+                    border: Utils.isSameDay(this.date!, DateTime.now())
+                        ? Border.all(
+                            color: Color(0xff1A4862),
+                            width: .5,
+                          )
+                        : null,
+                    color: selectedColor != null
+                        ? Utils.isSameDay(this.date!, DateTime.now())
+                            ? selectedTodayColor != null
+                                ? selectedTodayColor
+                                : Colors.red
+                            : selectedColor
+                        : Theme.of(context).primaryColor,
+                    image: events != null && events!.isNotEmpty
+                        ? icon != '' && icon != null
+                            ? DecorationImage(
+                                fit: BoxFit.cover,
+                                image: providerImage(icon!),
+                              )
+                            : null
+                        : null,
+                  )
                 : events == null
-                ? BoxDecoration()
-                : events!.isNotEmpty
-                ? BoxDecoration(
-              shape: BoxShape.circle,
-              image: icon != '' && icon != null
-                  ? DecorationImage(
-                fit: BoxFit.cover,
-                image: providerImage(icon!),
-              )
-                  : null,
-            )
-                : BoxDecoration(), // no decoration when not selected
+                    ? BoxDecoration()
+                    : events!.isNotEmpty
+                        ? BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: icon != '' && icon != null
+                                ? DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: providerImage(icon!),
+                                  )
+                                : null,
+                          )
+                        : BoxDecoration(), // no decoration when not selected
             alignment: Alignment.center,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -145,18 +155,18 @@ class NeatCleanCalendarTile extends StatelessWidget {
                     color: isSelected && this.date != null
                         ? Colors.redAccent
                         : Utils.isSameDay(this.date!, DateTime.now())
-                        ? todayColor
-                        : inMonth
-                        ? defaultDayColor != null
-                        ? defaultDayColor
-                        : events != null &&
-                        events!.isNotEmpty &&
-                        icon != ''
-                        ? Colors.white
-                        : Colors.black
-                        : (defaultOutOfMonthDayColor != null
-                        ? defaultOutOfMonthDayColor
-                        : Colors.grey),
+                            ? todayColor
+                            : inMonth
+                                ? defaultDayColor != null
+                                    ? defaultDayColor
+                                    : events != null &&
+                                            events!.isNotEmpty &&
+                                            icon != ''
+                                        ? Colors.white
+                                        : Colors.black
+                                : (defaultOutOfMonthDayColor != null
+                                    ? defaultOutOfMonthDayColor
+                                    : Colors.grey),
                   ),
                   textScaler: TextScaler.noScaling,
                   // Grey color for previous or next months dates
@@ -164,35 +174,31 @@ class NeatCleanCalendarTile extends StatelessWidget {
                 // Dots for the events
                 events != null && events!.length > 0
                     ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: events!.map((event) {
-                    eventCount++;
-                    // Show a maximum of 3 dots.
-                    if (eventCount > 3) return Container();
-                    return Container(
-                      margin: EdgeInsets.only(
-                          left: 2.0, right: 2.0, top: 1.0),
-                      width: 5.0,
-                      height: 5.0,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        // If event is done (isDone == true) set the color of the dots to
-                        // the eventDoneColor (if given) otherwise use the primary color of
-                        // the theme
-                        // If the event is not done yet, we use the given eventColor or the
-                        // color property of the NeatCleanCalendarEvent. If both aren't set, then
-                        // the accent color of the theme get used.
-                        color: eventColor ??
-                            event.backgroundColor ??
-                            Theme
-                                .of(context)
-                                .colorScheme
-                                .secondary
-                        ,
-                      ),
-                    );
-                  }).toList(),
-                )
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: events!.map((event) {
+                          eventCount++;
+                          // Show a maximum of 3 dots.
+                          if (eventCount > 3) return Container();
+                          return Container(
+                            margin:
+                                EdgeInsets.only(left: .5, right: .5, top: 1.0),
+                            width: 5.0,
+                            height: 5.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              // If event is done (isDone == true) set the color of the dots to
+                              // the eventDoneColor (if given) otherwise use the primary color of
+                              // the theme
+                              // If the event is not done yet, we use the given eventColor or the
+                              // color property of the NeatCleanCalendarEvent. If both aren't set, then
+                              // the accent color of the theme get used.
+                              color: eventColor ??
+                                  event.backgroundColor ??
+                                  Theme.of(context).colorScheme.secondary,
+                            ),
+                          );
+                        }).toList(),
+                      )
                     : Container(),
               ],
             ),
@@ -202,18 +208,16 @@ class NeatCleanCalendarTile extends StatelessWidget {
     }
   }
 
-  String? get icon =>
-      events!
-          .firstWhere(
-            (element) => Utils.isSameDay(this.date!, element.startTime),
-        orElse: () =>
-            NeatCleanCalendarEvent(
-              '',
-              startTime: this.date!,
-              endTime: this.date!,
-            ),
+  String? get icon => events!
+      .firstWhere(
+        (element) => Utils.isSameDay(this.date!, element.startTime),
+        orElse: () => NeatCleanCalendarEvent(
+          '',
+          startTime: this.date!,
+          endTime: this.date!,
+        ),
       )
-          .type;
+      .type;
 
   @override
   Widget build(BuildContext context) {

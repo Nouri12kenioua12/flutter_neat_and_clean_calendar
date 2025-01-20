@@ -83,7 +83,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           DateTime.now().day - 2, 14, 30),
       endTime: DateTime(DateTime.now().year, DateTime.now().month,
           DateTime.now().day + 2, 17, 0),
-      color: Colors.pink,
+      color: Colors.white,
       backgroundColor: Colors.pink,
       isAllDay: true,
     ),
@@ -94,7 +94,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           DateTime.now().day, 14, 30),
       endTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 17, 0),
-      color: Colors.indigo,
+      color: Colors.white,
       backgroundColor: Colors.indigo,
     ),
     NeatCleanCalendarEvent(
@@ -105,7 +105,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 7, 45),
       endTime: DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day, 9, 0),
-      color: Colors.red,
+      color: Colors.white,
       backgroundColor: Colors.green,
     ),
   ];
@@ -143,7 +143,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
           // eventCellBuilder: eventCell,
 
           // selectedColor: Colors.white,
-          selectedTodayColor: Colors.grey,
+
+          selectedTodayColor:Colors.white,
           // todayColor: Colors.red,
           // defaultOutOfMonthDayColor: Colors.grey,
           // defaultDayColor: Colors.black,
@@ -189,6 +190,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           //     ),
           //   );
           // },
+
 
           selectedColor: Colors.white,
           defaultDayColor: Colors.black,

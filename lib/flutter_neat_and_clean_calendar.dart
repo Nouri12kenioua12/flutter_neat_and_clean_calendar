@@ -413,7 +413,7 @@ class _CalendarState extends State<Calendar> {
               id: event.id,
               backgroundColor: event.backgroundColor,
               title: event.title,
-               guests: event.guests,
+              guests: event.guests,
             );
 
             if (i == 0) {
@@ -653,11 +653,14 @@ class _CalendarState extends State<Calendar> {
         child: Column(
           children: <Widget>[
             GridView.count(
+
               childAspectRatio: 1,
+              mainAxisSpacing: 0,
+              crossAxisSpacing: 5,
               primary: false,
               shrinkWrap: true,
               crossAxisCount: 7,
-              padding: EdgeInsets.only(bottom: 0.0),
+              // padding: EdgeInsets.only(right: 10,left: 10),
               children: calendarBuilder(),
             ),
           ],
@@ -982,50 +985,6 @@ class _CalendarState extends State<Calendar> {
     ]);
   }
 
-  // Column(
-  // mainAxisAlignment: MainAxisAlignment.start,
-  // mainAxisSize: MainAxisSize.min,
-  // children: <Widget>[
-  // nameAndIconRow,
-  // if (forceEventListView) ...[
-  // eventlistView,
-  // if (!_didScroll) ...[
-  // // When the widget is built, a PostFrameCallback is added to scroll the widget
-  // // after it has been built.
-  // Builder(
-  // builder: (context) {
-  // WidgetsBinding.instance.addPostFrameCallback((_) {
-  // Future.delayed(Duration(milliseconds: 100), () {
-  // // Only execute the scroll to top, if the scroll
-  // // controller has clients (was properly attached to a
-  // // list view).
-  // if (_scrollController.hasClients) {
-  // resetToToday();
-  // }
-  // });
-  // });
-  // return Container();
-  // },
-  // ),
-  // ]
-  // ] else ...[
-  // ExpansionCrossFade(
-  // collapsed: calendarGridView,
-  // expanded: calendarGridView,
-  // isExpanded: isExpanded,
-  // ),
-  // // Expanded(
-  // //   child:
-  // //   Stack(
-  // //     children: [
-  // expansionButtonRow,
-  // if (widget.showEvents) eventlistView,
-  // //     ],
-  // //   ),
-  // // ),
-  // ],
-  // ],
-  // ),
   /// A getter that returns a list of widgets representing the events in the event card.
   ///
   /// The `eventlistView` method creates a list of widgets that represent the events in the event card.
@@ -1159,8 +1118,9 @@ class _CalendarState extends State<Calendar> {
       height:
           widget.eventTileHeight ?? MediaQuery.of(context).size.height * 0.1,
       decoration: BoxDecoration(
-          border:
-              Border(bottom: BorderSide(color: Colors.grey.withOpacity(0.3)))),
+          border: Border(
+        bottom: BorderSide(color: Colors.grey.shade200,width: .5),
+      )),
       child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
@@ -1180,14 +1140,15 @@ class _CalendarState extends State<Calendar> {
               Row(
                 children: [
                   Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                    padding: EdgeInsets.only(
+                        right: 12.0, left: 12.0, top: 5.0, bottom: 4),
                     decoration: BoxDecoration(
                       color: event.backgroundColor,
                       borderRadius: BorderRadius.circular(25),
                     ),
                     child: Text(event.type ?? "__",
                         style: TextStyle(
+                          fontSize: 11,
                           color: event.color ?? Colors.white,
                         )),
                   ),
@@ -1216,7 +1177,7 @@ class _CalendarState extends State<Calendar> {
                       ),
                     )),
                     VerticalDivider(
-                      color: Colors.grey,
+                      color: Colors.grey.shade300,
                       thickness: .5,
                       width: 15,
                     ),
@@ -1232,13 +1193,13 @@ class _CalendarState extends State<Calendar> {
                       ),
                     )),
                     VerticalDivider(
-                      color: Colors.grey,
+                      color: Colors.grey.shade300,
                       thickness: .5,
                       width: 15,
                     ),
                     Flexible(
                         child: Text(
-                      event.guests ?? "abenourKenioua fjnfjd",
+                      event.guests ?? "--",
                       style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: 12,
