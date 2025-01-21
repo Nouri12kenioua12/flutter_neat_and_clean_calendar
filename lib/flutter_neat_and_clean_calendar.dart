@@ -17,8 +17,8 @@ import 'package:intl/date_symbol_data_local.dart';
 export './neat_and_clean_calendar_event.dart';
 
 typedef DayBuilder(BuildContext context, DateTime day);
-typedef EventListBuilder(
-    BuildContext context, List<NeatCleanCalendarEvent> events);
+typedef EventListBuilder(BuildContext context,
+    List<NeatCleanCalendarEvent> events);
 typedef EventCellBuilder(BuildContext context, NeatCleanCalendarEvent event,
     String start, String end);
 
@@ -110,7 +110,7 @@ class Calendar extends StatefulWidget {
   final ValueChanged<NeatCleanCalendarEvent>? onEventLongPressed;
   final ValueChanged? onListViewStateChanged;
   final ValueChanged<Map<DateTime, List<NeatCleanCalendarEvent>>>?
-      onEventsUpdated;
+  onEventsUpdated;
   final ValueChanged<String>? onPrintLog;
   final ValueChanged<DateTime>? onTodayButtonPressed;
   final bool isExpandable;
@@ -154,55 +154,54 @@ class Calendar extends StatefulWidget {
 
   /// Configures the date picker if enabled
 
-  Calendar(
-      {this.onMonthChanged,
-      this.onDateSelected,
-      this.onRangeSelected,
-      this.onExpandStateChanged,
-      this.onEventSelected,
-      this.onEventLongPressed,
-      this.onListViewStateChanged,
-      this.onEventsUpdated,
-      this.onPrintLog,
-      this.onTodayButtonPressed,
-      this.isExpandable = false,
-      this.eventsList,
-      this.dayBuilder,
-      this.eventListBuilder,
-      this.eventCellBuilder,
-      this.datePickerType = DatePickerType.hidden,
-      this.hideTodayIcon = false,
-      this.hideArrows = false,
-      this.emptyEventWidget = const Text('No events'),
-      this.defaultDayColor = Colors.black87,
-      this.defaultOutOfMonthDayColor,
-      this.selectedColor = Colors.pink,
-      this.selectedTodayColor,
-      this.todayColor = Colors.blue,
-      this.topRowIconColor = Colors.blue,
-      this.datePickerLightTheme,
-      this.datePickerDarkTheme,
-      this.todayButtonText = 'Today',
-      this.allDayEventText = 'All Day',
-      this.multiDayEndText = 'End',
-      this.eventColor,
-      this.eventDoneColor,
-      this.initialDate,
-      this.isExpanded = false,
-      this.weekDays = const ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-      this.locale = 'us_US',
-      this.startOnMonday = false,
-      this.dayOfWeekStyle,
-      this.bottomBarTextStyle,
-      this.bottomBarArrowColor,
-      this.bottomBarColor,
-      this.expandableDateFormat = 'EEEE MMMM dd, yyyy',
-      this.displayMonthTextStyle,
-      this.datePickerConfig,
-      this.eventTileHeight,
-      this.forceEventListView = false,
-      this.showEventListViewIcon = true,
-      this.showEvents = true});
+  Calendar({this.onMonthChanged,
+    this.onDateSelected,
+    this.onRangeSelected,
+    this.onExpandStateChanged,
+    this.onEventSelected,
+    this.onEventLongPressed,
+    this.onListViewStateChanged,
+    this.onEventsUpdated,
+    this.onPrintLog,
+    this.onTodayButtonPressed,
+    this.isExpandable = false,
+    this.eventsList,
+    this.dayBuilder,
+    this.eventListBuilder,
+    this.eventCellBuilder,
+    this.datePickerType = DatePickerType.hidden,
+    this.hideTodayIcon = false,
+    this.hideArrows = false,
+    this.emptyEventWidget = const Text('No events'),
+    this.defaultDayColor = Colors.black87,
+    this.defaultOutOfMonthDayColor,
+    this.selectedColor = Colors.pink,
+    this.selectedTodayColor,
+    this.todayColor = Colors.blue,
+    this.topRowIconColor = Colors.blue,
+    this.datePickerLightTheme,
+    this.datePickerDarkTheme,
+    this.todayButtonText = 'Today',
+    this.allDayEventText = 'All Day',
+    this.multiDayEndText = 'End',
+    this.eventColor,
+    this.eventDoneColor,
+    this.initialDate,
+    this.isExpanded = false,
+    this.weekDays = const ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    this.locale = 'us_US',
+    this.startOnMonday = false,
+    this.dayOfWeekStyle,
+    this.bottomBarTextStyle,
+    this.bottomBarArrowColor,
+    this.bottomBarColor,
+    this.expandableDateFormat = 'EEEE MMMM dd, yyyy',
+    this.displayMonthTextStyle,
+    this.datePickerConfig,
+    this.eventTileHeight,
+    this.forceEventListView = false,
+    this.showEventListViewIcon = true,
+    this.showEvents = true});
 
   @override
   _CalendarState createState() => _CalendarState();
@@ -242,9 +241,9 @@ class _CalendarState extends State<Calendar> {
         if (mounted) {
           setState(() {
             var monthFormat =
-                DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
+            DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
             displayMonth =
-                '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+            '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
           });
         }
       }).catchError((error) {
@@ -318,7 +317,9 @@ class _CalendarState extends State<Calendar> {
         DateTime eventDate = itemList[i] as DateTime;
 
         // Berechne die Differenz in Tagen zwischen dem Event-Datum und dem aktuellen Datum
-        int difference = (eventDate.difference(currentDate).inDays).abs();
+        int difference = (eventDate
+            .difference(currentDate)
+            .inDays).abs();
 
         if (difference < minDifference) {
           minDifference = difference;
@@ -355,7 +356,9 @@ class _CalendarState extends State<Calendar> {
         eventsMap != null &&
         eventsMap!.isEmpty) {
       widget.eventsList!.forEach((event) {
-        int range = event.endTime.difference(event.startTime).inDays;
+        int range = event.endTime
+            .difference(event.startTime)
+            .inDays;
 
         // Check if the end time is before the start time and adjust the calculation.
         if (event.endTime.hour < event.startTime.hour ||
@@ -366,9 +369,9 @@ class _CalendarState extends State<Calendar> {
         // Event starts and ends on the same day.
         if (range == 0) {
           List<NeatCleanCalendarEvent> dateList = eventsMap![DateTime(
-                  event.startTime.year,
-                  event.startTime.month,
-                  event.startTime.day)] ??
+              event.startTime.year,
+              event.startTime.month,
+              event.startTime.day)] ??
               [];
           // Just add the event to the list.
           eventsMap![DateTime(event.startTime.year, event.startTime.month,
@@ -376,9 +379,9 @@ class _CalendarState extends State<Calendar> {
         } else {
           for (var i = 0; i <= range; i++) {
             List<NeatCleanCalendarEvent> dateList = eventsMap![DateTime(
-                    event.startTime.year,
-                    event.startTime.month,
-                    event.startTime.day + i)] ??
+                event.startTime.year,
+                event.startTime.month,
+                event.startTime.day + i)] ??
                 [];
             // Iteration over the range (difference between start and end time in days).
             NeatCleanCalendarEvent newEvent = NeatCleanCalendarEvent(
@@ -434,11 +437,11 @@ class _CalendarState extends State<Calendar> {
     }
     selectedMonthsDays = _daysInMonth(_selectedDate);
     selectedWeekDays = Utils.daysInRange(
-            _firstDayOfWeek(_selectedDate), _lastDayOfWeek(_selectedDate))
+        _firstDayOfWeek(_selectedDate), _lastDayOfWeek(_selectedDate))
         .toList();
 
     _selectedEvents = eventsMap?[DateTime(
-            _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+        _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
         [];
 
     widget.onPrintLog != null
@@ -493,53 +496,53 @@ class _CalendarState extends State<Calendar> {
       jumpDateIcon = PlatformIconButton(
         onPressed: () {
           showDatePicker(
-                  builder: (BuildContext context, Widget? child) {
-                    // Define Light Theme
-                    ThemeData lightTheme = widget.datePickerLightTheme ??
-                        ThemeData.light().copyWith(
-                          colorScheme: ColorScheme.light(
-                            primary: Colors.blue,
-                            onPrimary: Colors.white,
-                            surface: Colors.white,
-                            onSurface: Colors.black,
-                          ),
-                          textButtonTheme: TextButtonThemeData(
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.red,
-                            ),
-                          ),
-                        );
-
-                    // Define Dark Theme
-                    ThemeData darkTheme = widget.datePickerDarkTheme ??
-                        ThemeData.dark().copyWith(
-                          colorScheme: ColorScheme.dark(
-                            primary: Colors.blue,
-                            onPrimary: Colors.white,
-                            surface: Colors.grey,
-                            onSurface: Colors.white,
-                          ),
-                          textButtonTheme: TextButtonThemeData(
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.yellow,
-                            ),
-                          ),
-                        );
-
-                    // Choose the theme based on the current mode
-                    return Theme(
-                      data: isDarkMode ? darkTheme : lightTheme,
-                      child: child!,
+              builder: (BuildContext context, Widget? child) {
+                // Define Light Theme
+                ThemeData lightTheme = widget.datePickerLightTheme ??
+                    ThemeData.light().copyWith(
+                      colorScheme: ColorScheme.light(
+                        primary: Colors.blue,
+                        onPrimary: Colors.white,
+                        surface: Colors.white,
+                        onSurface: Colors.black,
+                      ),
+                      textButtonTheme: TextButtonThemeData(
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.red,
+                        ),
+                      ),
                     );
-                  },
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime(2100),
-                  initialDatePickerMode:
-                      widget.datePickerType == DatePickerType.date
-                          ? DatePickerMode.day
-                          : DatePickerMode.year)
+
+                // Define Dark Theme
+                ThemeData darkTheme = widget.datePickerDarkTheme ??
+                    ThemeData.dark().copyWith(
+                      colorScheme: ColorScheme.dark(
+                        primary: Colors.blue,
+                        onPrimary: Colors.white,
+                        surface: Colors.grey,
+                        onSurface: Colors.white,
+                      ),
+                      textButtonTheme: TextButtonThemeData(
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.yellow,
+                        ),
+                      ),
+                    );
+
+                // Choose the theme based on the current mode
+                return Theme(
+                  data: isDarkMode ? darkTheme : lightTheme,
+                  child: child!,
+                );
+              },
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1900),
+              lastDate: DateTime(2100),
+              initialDatePickerMode:
+              widget.datePickerType == DatePickerType.date
+                  ? DatePickerMode.day
+                  : DatePickerMode.year)
               .then((date) {
             if (date != null) {
               // The selected date is printed to the console in ISO 8601 format for debugging purposes.
@@ -552,22 +555,22 @@ class _CalendarState extends State<Calendar> {
               // selected date.
               widget.onPrintLog != null
                   ? widget.onPrintLog!(
-                      'Date chosen: ${_selectedDate.toIso8601String()}')
+                  'Date chosen: ${_selectedDate.toIso8601String()}')
                   : print('Date chosen: ${_selectedDate.toIso8601String()}');
               onJumpToDateSelected(date);
               setState(() {
                 _selectedDate = date;
                 selectedMonthsDays = _daysInMonth(_selectedDate);
                 selectedWeekDays = Utils.daysInRange(
-                        _firstDayOfWeek(_selectedDate),
-                        _lastDayOfWeek(_selectedDate))
+                    _firstDayOfWeek(_selectedDate),
+                    _lastDayOfWeek(_selectedDate))
                     .toList();
                 var monthFormat = DateFormat('MMMM yyyy', widget.locale)
                     .format(_selectedDate);
                 displayMonth =
-                    '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+                '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
                 _selectedEvents = eventsMap?[DateTime(_selectedDate.year,
-                        _selectedDate.month, _selectedDate.day)] ??
+                    _selectedDate.month, _selectedDate.day)] ??
                     [];
               });
             }
@@ -591,20 +594,20 @@ class _CalendarState extends State<Calendar> {
             forceEventListView ? Container() : leftArrow ?? Container(),
             widget.showEventListViewIcon
                 ? PlatformIconButton(
-                    onPressed: () {
-                      setState(() {
-                        forceEventListView = !forceEventListView;
-                        if (widget.onListViewStateChanged != null) {
-                          _didScroll = false;
-                          widget.onListViewStateChanged!(forceEventListView);
-                        }
-                      });
-                    },
-                    icon: Icon(
-                      Icons.list,
-                      color: widget.topRowIconColor,
-                    ),
-                  )
+              onPressed: () {
+                setState(() {
+                  forceEventListView = !forceEventListView;
+                  if (widget.onListViewStateChanged != null) {
+                    _didScroll = false;
+                    widget.onListViewStateChanged!(forceEventListView);
+                  }
+                });
+              },
+              icon: Icon(
+                Icons.list,
+                color: widget.topRowIconColor,
+              ),
+            )
                 : Container(),
             Expanded(child: Container()), // Placeholder to balance the Row
             forceEventListView ? Container() : jumpDateIcon ?? Container(),
@@ -672,9 +675,9 @@ class _CalendarState extends State<Calendar> {
   List<Widget> calendarBuilder() {
     List<Widget> dayWidgets = [];
     List<DateTime> calendarDays =
-        isExpanded ? selectedMonthsDays : selectedWeekDays as List<DateTime>;
+    isExpanded ? selectedMonthsDays : selectedWeekDays as List<DateTime>;
     widget.weekDays.forEach(
-      (day) {
+          (day) {
         dayWidgets.add(
           NeatCleanCalendarTile(
             defaultDayColor: widget.defaultDayColor,
@@ -702,11 +705,9 @@ class _CalendarState extends State<Calendar> {
     bool monthEnded = false;
 
     calendarDays.forEach(
-      (day) {
+          (day) {
         if (day.hour > 0) {
-          day = DateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'")
-              .parse(day.toString(), true)
-              .toLocal();
+          day = day.toLocal();
           day = day.subtract(new Duration(hours: day.hour));
         }
 
@@ -760,19 +761,22 @@ class _CalendarState extends State<Calendar> {
 
   TextStyle? configureDateStyle(monthStarted, monthEnded) {
     TextStyle? dateStyles;
-    final TextStyle? body1Style = Theme.of(context).textTheme.bodyMedium;
+    final TextStyle? body1Style = Theme
+        .of(context)
+        .textTheme
+        .bodyMedium;
 
     if (isExpanded) {
       final TextStyle body1StyleDisabled = body1Style!.copyWith(
           color: Color.fromARGB(
-        100,
-        body1Style.color!.red,
-        body1Style.color!.green,
-        body1Style.color!.blue,
-      ));
+            100,
+            body1Style.color!.red,
+            body1Style.color!.green,
+            body1Style.color!.blue,
+          ));
 
       dateStyles =
-          monthStarted && !monthEnded ? body1Style : body1StyleDisabled;
+      monthStarted && !monthEnded ? body1Style : body1StyleDisabled;
     } else {
       dateStyles = body1Style;
     }
@@ -786,7 +790,7 @@ class _CalendarState extends State<Calendar> {
         child: Container(
           decoration: BoxDecoration(
               color:
-                  widget.bottomBarColor ?? Color.fromRGBO(200, 200, 200, 0.2),
+              widget.bottomBarColor ?? Color.fromRGBO(200, 200, 200, 0.2),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(25),
                 topRight: Radius.circular(25),
@@ -804,15 +808,15 @@ class _CalendarState extends State<Calendar> {
                 padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
                 icon: isExpanded
                     ? Icon(
-                        Icons.arrow_drop_up,
-                        size: 25.0,
-                        color: widget.bottomBarArrowColor ?? Colors.black,
-                      )
+                  Icons.arrow_drop_up,
+                  size: 25.0,
+                  color: widget.bottomBarArrowColor ?? Colors.black,
+                )
                     : Icon(
-                        Icons.arrow_drop_down,
-                        size: 25.0,
-                        color: widget.bottomBarArrowColor ?? Colors.black,
-                      ),
+                  Icons.arrow_drop_down,
+                  size: 25.0,
+                  color: widget.bottomBarArrowColor ?? Colors.black,
+                ),
               ),
               // SizedBox(width: 40.0),
               Text(
@@ -837,8 +841,14 @@ class _CalendarState extends State<Calendar> {
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(start, style: Theme.of(context).textTheme.bodyLarge),
-        Text(end, style: Theme.of(context).textTheme.bodyMedium),
+        Text(start, style: Theme
+            .of(context)
+            .textTheme
+            .bodyLarge),
+        Text(end, style: Theme
+            .of(context)
+            .textTheme
+            .bodyMedium),
       ],
     );
   }
@@ -859,7 +869,10 @@ class _CalendarState extends State<Calendar> {
         children: [
           Text(
             widget.allDayEventText,
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyLarge,
           ),
         ],
       );
@@ -890,15 +903,23 @@ class _CalendarState extends State<Calendar> {
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(start, style: Theme.of(context).textTheme.bodyLarge),
-        Text(end, style: Theme.of(context).textTheme.bodyMedium),
+        Text(start, style: Theme
+            .of(context)
+            .textTheme
+            .bodyLarge),
+        Text(end, style: Theme
+            .of(context)
+            .textTheme
+            .bodyMedium),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    isDarkMode = Theme
+        .of(context)
+        .brightness == Brightness.dark;
 
     // If _selectedEvents is not null, then we sort the events by isAllDay propeerty, so that
     // all day events are displayed at the top of the list.
@@ -949,24 +970,25 @@ class _CalendarState extends State<Calendar> {
                         },
                       ),
                     ]
-                  ] else ...[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                      child: ExpansionCrossFade(
-                        collapsed: calendarGridView,
-                        expanded: calendarGridView,
-                        isExpanded: isExpanded,
+                  ] else
+                    ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                        child: ExpansionCrossFade(
+                          collapsed: calendarGridView,
+                          expanded: calendarGridView,
+                          isExpanded: isExpanded,
+                        ),
                       ),
-                    ),
-                    // Expanded(
-                    //   child:
-                    //   Stack(
-                    //     children: [
+                      // Expanded(
+                      //   child:
+                      //   Stack(
+                      //     children: [
 
-                    //     ],
-                    //   ),
-                    // ),
-                  ],
+                      //     ],
+                      //   ),
+                      // ),
+                    ],
                 ],
               ),
             ),
@@ -1000,7 +1022,7 @@ class _CalendarState extends State<Calendar> {
     // If the list view is active, show the full list of events. Otherwise only the
     // events for the selected day are shown.
     List<NeatCleanCalendarEvent>? _listEvents =
-        forceEventListView ? widget.eventsList : _selectedEvents;
+    forceEventListView ? widget.eventsList : _selectedEvents;
 
     // If eventListBuilder is provided, use it to build the list of events to show.
     // Otherwise use the default list of events.
@@ -1037,9 +1059,9 @@ class _CalendarState extends State<Calendar> {
                   // Event cell for the list of events
                   final NeatCleanCalendarEvent event = item;
                   final String start =
-                      DateFormat('HH:mm').format(event.startTime).toString();
+                  DateFormat('HH:mm').format(event.startTime).toString();
                   final String end =
-                      DateFormat('HH:mm').format(event.endTime).toString();
+                  DateFormat('HH:mm').format(event.endTime).toString();
                   if (widget.eventCellBuilder == null) {
                     return eventCell(event, start, end);
                   } else {
@@ -1052,51 +1074,51 @@ class _CalendarState extends State<Calendar> {
       } else {
         // List view is not active
         return _listEvents != null && _listEvents.isNotEmpty
-            // Create a list of events that are occurring on the currently selected day, if there are
-            // any. Otherwise, display an empty Container.
+        // Create a list of events that are occurring on the currently selected day, if there are
+        // any. Otherwise, display an empty Container.
             ?
-            //
-            Container(
-                margin: EdgeInsets.only(top: 60.0),
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
-                  ),
-                ),
-                child: ListView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  itemBuilder: (BuildContext context, int index) {
-                    final NeatCleanCalendarEvent event = _listEvents[index];
-                    final String start =
-                        DateFormat('HH:mm').format(event.startTime).toString();
-                    final String end =
-                        DateFormat('HH:mm').format(event.endTime).toString();
-                    return widget.eventCellBuilder == null
-                        ? eventCell(event, start, end)
-                        : widget.eventCellBuilder!(context, event, start, end);
-                  },
-                  itemCount: _listEvents.length,
-                ))
+        //
+        Container(
+            margin: EdgeInsets.only(top: 60.0),
+            padding: EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(25),
+                topRight: Radius.circular(25),
+              ),
+            ),
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              itemBuilder: (BuildContext context, int index) {
+                final NeatCleanCalendarEvent event = _listEvents[index];
+                final String start =
+                DateFormat('HH:mm').format(event.startTime).toString();
+                final String end =
+                DateFormat('HH:mm').format(event.endTime).toString();
+                return widget.eventCellBuilder == null
+                    ? eventCell(event, start, end)
+                    : widget.eventCellBuilder!(context, event, start, end);
+              },
+              itemCount: _listEvents.length,
+            ))
             : Container(
-                margin: EdgeInsets.only(top: 60.0),
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
-                  ),
-                ),
-                child: Column(
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(child: widget.emptyEventWidget),
-                  ],
-                ));
+            margin: EdgeInsets.only(top: 60.0),
+            padding: EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(25),
+                topRight: Radius.circular(25),
+              ),
+            ),
+            child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(child: widget.emptyEventWidget),
+              ],
+            ));
       }
     } else {
       // eventListBuilder is not null
@@ -1116,11 +1138,14 @@ class _CalendarState extends State<Calendar> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       height:
-          widget.eventTileHeight ?? MediaQuery.of(context).size.height * 0.1,
+      widget.eventTileHeight ?? MediaQuery
+          .of(context)
+          .size
+          .height * 0.1,
       decoration: BoxDecoration(
           border: Border(
-        bottom: BorderSide(color: Colors.grey.shade200, width: .5),
-      )),
+            bottom: BorderSide(color: Colors.grey.shade200, width: .5),
+          )),
       child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
@@ -1169,13 +1194,13 @@ class _CalendarState extends State<Calendar> {
                   children: [
                     Flexible(
                         child: Text(
-                      event.title ?? "ab",
-                      style: TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
+                          event.title ?? "ab",
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
                     VerticalDivider(
                       color: Colors.grey.shade300,
                       thickness: .5,
@@ -1183,15 +1208,19 @@ class _CalendarState extends State<Calendar> {
                     ),
                     Flexible(
                         child: Text(
-                      DateFormat('HH:mm').format(event.startTime).toString() +
-                          " - " +
-                          DateFormat('HH:mm').format(event.endTime).toString(),
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
+                          DateFormat('HH:mm')
+                              .format(event.startTime)
+                              .toString() +
+                              " - " +
+                              DateFormat('HH:mm')
+                                  .format(event.endTime)
+                                  .toString(),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
                     VerticalDivider(
                       color: Colors.grey.shade300,
                       thickness: .5,
@@ -1199,84 +1228,84 @@ class _CalendarState extends State<Calendar> {
                     ),
                     Flexible(
                         child: Text(
-                      event.guests ?? "--",
-                      style: TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        fontSize: 12,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
+                          event.guests ?? "--",
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 12,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
                   ],
                 ),
               )
             ],
           )
-          // Row(
-          //   crossAxisAlignment: CrossAxisAlignment.center,
-          //   children: <Widget>[
-          //     Expanded(
-          //       flex: event.wide != null && event.wide! == true ? 25 : 5,
-          //       child: Padding(
-          //         padding: const EdgeInsets.all(4.0),
-          //         child: Container(
-          //           decoration: BoxDecoration(
-          //             // If no image is provided, use the color of the event.
-          //             // If the event has set isDone to true, use the eventDoneColor
-          //             // gets used. If that eventDoneColor is not set, use the
-          //             // primaryColor of the theme.
-          //             color: event.isDone
-          //                 ? widget.eventDoneColor ??
-          //                     Theme.of(context).primaryColor
-          //                 : event.color,
-          //             borderRadius: BorderRadius.circular(10),
-          //             image: event.icon != '' && event.icon != null
-          //                 ? DecorationImage(
-          //                     fit: BoxFit.cover,
-          //                     image: providerImage(event.icon!),
-          //                   )
-          //                 : null,
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //     SizedBox(height: 5.0),
-          //     Expanded(
-          //       flex: 60,
-          //       child: Padding(
-          //         padding: const EdgeInsets.all(8.0),
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           mainAxisAlignment: MainAxisAlignment.center,
-          //           children: [
-          //             Text(event.summary,
-          //                 style: Theme.of(context).textTheme.bodySmall),
-          //             SizedBox(
-          //               height: 10.0,
-          //             ),
-          //             Text(
-          //               event.description,
-          //               overflow: TextOverflow.ellipsis,
-          //             )
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //     // This Expanded widget gets used to display the start and end time of the
-          // event.
-          // Expanded(
-          //   flex: 30,
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(8.0),
-          //     // If the event is all day, then display the word "All day" with no time.
-          //     child: event.isAllDay || event.isMultiDay
-          //         ? allOrMultiDayDayTimeWidget(event)
-          //         : singleDayTimeWidget(start, end),
-          //   ),
-          // )
-          //   ],
-          // ),
-          ),
+        // Row(
+        //   crossAxisAlignment: CrossAxisAlignment.center,
+        //   children: <Widget>[
+        //     Expanded(
+        //       flex: event.wide != null && event.wide! == true ? 25 : 5,
+        //       child: Padding(
+        //         padding: const EdgeInsets.all(4.0),
+        //         child: Container(
+        //           decoration: BoxDecoration(
+        //             // If no image is provided, use the color of the event.
+        //             // If the event has set isDone to true, use the eventDoneColor
+        //             // gets used. If that eventDoneColor is not set, use the
+        //             // primaryColor of the theme.
+        //             color: event.isDone
+        //                 ? widget.eventDoneColor ??
+        //                     Theme.of(context).primaryColor
+        //                 : event.color,
+        //             borderRadius: BorderRadius.circular(10),
+        //             image: event.icon != '' && event.icon != null
+        //                 ? DecorationImage(
+        //                     fit: BoxFit.cover,
+        //                     image: providerImage(event.icon!),
+        //                   )
+        //                 : null,
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //     SizedBox(height: 5.0),
+        //     Expanded(
+        //       flex: 60,
+        //       child: Padding(
+        //         padding: const EdgeInsets.all(8.0),
+        //         child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           mainAxisAlignment: MainAxisAlignment.center,
+        //           children: [
+        //             Text(event.summary,
+        //                 style: Theme.of(context).textTheme.bodySmall),
+        //             SizedBox(
+        //               height: 10.0,
+        //             ),
+        //             Text(
+        //               event.description,
+        //               overflow: TextOverflow.ellipsis,
+        //             )
+        //           ],
+        //         ),
+        //       ),
+        //     ),
+        //     // This Expanded widget gets used to display the start and end time of the
+        // event.
+        // Expanded(
+        //   flex: 30,
+        //   child: Padding(
+        //     padding: const EdgeInsets.all(8.0),
+        //     // If the event is all day, then display the word "All day" with no time.
+        //     child: event.isAllDay || event.isMultiDay
+        //         ? allOrMultiDayDayTimeWidget(event)
+        //         : singleDayTimeWidget(start, end),
+        //   ),
+        // )
+        //   ],
+        // ),
+      ),
     );
   }
 
@@ -1315,11 +1344,11 @@ class _CalendarState extends State<Calendar> {
       updateSelectedRange(firstDateOfNewMonth, lastDateOfNewMonth);
       selectedMonthsDays = _daysInMonth(_selectedDate);
       var monthFormat =
-          DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
+      DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
       displayMonth =
-          '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+      '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
       _selectedEvents = eventsMap?[DateTime(
-              _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+          _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
           [];
     });
   }
@@ -1341,11 +1370,11 @@ class _CalendarState extends State<Calendar> {
       updateSelectedRange(firstDateOfNewMonth, lastDateOfNewMonth);
       selectedMonthsDays = _daysInMonth(_selectedDate);
       var monthFormat =
-          DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
+      DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
       displayMonth =
-          '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+      '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
       _selectedEvents = eventsMap?[DateTime(
-              _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+          _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
           [];
     });
   }
@@ -1362,11 +1391,11 @@ class _CalendarState extends State<Calendar> {
           Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
               .toList();
       var monthFormat =
-          DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
+      DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
       displayMonth =
-          '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+      '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
       _selectedEvents = eventsMap?[DateTime(
-              _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+          _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
           [];
     });
   }
@@ -1383,11 +1412,11 @@ class _CalendarState extends State<Calendar> {
           Utils.daysInRange(firstDayOfCurrentWeek, lastDayOfCurrentWeek)
               .toList();
       var monthFormat =
-          DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
+      DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
       displayMonth =
-          '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+      '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
       _selectedEvents = eventsMap?[DateTime(
-              _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+          _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
           [];
     });
   }
@@ -1413,11 +1442,11 @@ class _CalendarState extends State<Calendar> {
               .toList();
       selectedMonthsDays = _daysInMonth(_selectedDate);
       var monthFormat =
-          DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
+      DateFormat('MMMM yyyy', widget.locale).format(_selectedDate);
       displayMonth =
-          '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
+      '${monthFormat[0].toUpperCase()}${monthFormat.substring(1)}';
       _selectedEvents = eventsMap?[DateTime(
-              _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
+          _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
           [];
     });
   }
@@ -1575,10 +1604,9 @@ class ExpansionCrossFade extends StatelessWidget {
   final Widget expanded;
   final bool isExpanded;
 
-  ExpansionCrossFade(
-      {required this.collapsed,
-      required this.expanded,
-      required this.isExpanded});
+  ExpansionCrossFade({required this.collapsed,
+    required this.expanded,
+    required this.isExpanded});
 
   @override
   Widget build(BuildContext context) {
@@ -1589,7 +1617,7 @@ class ExpansionCrossFade extends StatelessWidget {
       secondCurve: const Interval(0.0, 1.0, curve: Curves.fastOutSlowIn),
       sizeCurve: Curves.decelerate,
       crossFadeState:
-          isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
       duration: const Duration(milliseconds: 200),
     );
   }
