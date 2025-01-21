@@ -704,8 +704,8 @@ class _CalendarState extends State<Calendar> {
     calendarDays.forEach(
       (day) {
         if (day.hour > 0) {
-          day = DateFormat("yyyy-MM-dd HH:mm:ssZZZ")
-              .parse(day.toString())
+          day = DateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'")
+              .parse(day.toString(), true)
               .toLocal();
           day = day.subtract(new Duration(hours: day.hour));
         }
